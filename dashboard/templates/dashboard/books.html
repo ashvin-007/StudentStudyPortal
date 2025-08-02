@@ -1,0 +1,81 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class='text-center container'>
+    <h2>Search books and browse your favorite</h2>
+    <p>Just enter the search query to obtain the results</p>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.text }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+
+    {% for result in results %}
+        <a href="{{ result.preview }}" target="_blank" style="text-decoration: none; color: inherit;">
+            <div class="card mb-3 text-left">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img class="img-fluid" src="{{ result.thumbnail }}" alt="Book Image">
+                        </div>
+                        <div class="col-md-9">
+                            <h3 class="p-0 m-0">{{ result.title }}</h3>
+                            {% if result.subtitle %}
+                                <h5 class="p-0 m-0 text-muted"><u>{{ result.subtitle }}</u></h5>
+                            {% endif %}
+                            {% if result.description %}
+                                <h6 class="p-0 m-1">{{ result.description|truncatewords:30 }}</h6>
+                            {% endif %}
+
+                            {% if result.categories %}
+                                <h6 class="ml-0 mt-2">Category: 
+                                    {% for category in result.categories %}
+                                        {{ category }}
+                                    {% endfor %}
+                                </h6>
+                            {% endif %}
+
+                            {% if result.count %}
+                                <h6 class="ml-0 mt-1">Pages: {{ result.count }}</h6>
+                            {% endif %}
+
+                            {% if result.rating %}
+                                <h6 class="ml-0 mt-1">Rating: {{ result.rating }}</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+
+    <!-- Pagination Controls -->
+    {% if results.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if results.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ results.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in results.paginator.page_range %}
+                    <li class="page-item {% if results.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if results.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ results.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+</section>
+
+{% endblock content %}

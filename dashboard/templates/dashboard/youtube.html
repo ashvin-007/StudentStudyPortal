@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block content %}
+<section class='text-center container'>
+    <h2>Search Videos in Youtube</h2>
+    <p>search videos and select any video to open in youtube</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.text}}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form><br>
+    
+    {% for r in result  %}
+        
+    
+    <a href="{{r.link}}" target="_blank">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img class="img-fluid" src="{{r.thumbnails}}" alt="">
+                        
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="p-0 m-0">{{r.title}}</h3>
+                        <b>
+                            <u>
+                                <h5 class="p-0 m-0">{{r.channel}}</h5>
+                            </u>
+                        </b>
+                        <h6 class="p-0 m-1">{{r.description}}</h6>
+                        <b>
+                            <h6 class="ml-0 mt-3">{{r.duration}}</h6>
+                            <h6 class="ml-0 mt-1">{{r.views}}</h6>
+                            <h6 class="ml-0 mt-1">{{r.published}}</h6>
+                        </b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+    <br>
+     <div class="text-center mt-4">
+        {% if prev_page %}
+            <a href="?page={{ prev_page }}" class="btn btn-primary">Previous</a>
+        {% endif %}
+
+        <span class="mx-3"><b>Page {{ page }}</b></span>
+
+        {% if result|length == 10 %}
+            <a href="?page={{ next_page }}" class="btn btn-primary">Next</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock content %}
