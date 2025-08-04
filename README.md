@@ -1,6 +1,6 @@
 # 🎓 Student Study Portal
 
-A study assistant web application built using Django. This project helps students manage their academic resources efficiently and includes features like notes, homework tracking, to-do lists, YouTube video search, book search, dictionary, Wikipedia lookup, and unit conversion.
+A complete personal study assistant web application built using Django. This project helps students manage their academic resources efficiently and includes features like notes, homework tracking, to-do lists, YouTube video search, book search, dictionary, Wikipedia lookup, and unit conversion.
 
 ---
 
